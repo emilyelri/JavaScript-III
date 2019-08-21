@@ -141,6 +141,71 @@ Humanoid.prototype.greet = function() {
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
 
   // Stretch task: 
-  // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
+  // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.
+
+  function Villain(character) {
+    Humanoid.call(this, character);
+    armor: character.armor;
+    evilness: character.evilness;
+  }
+  Villain.prototype = Object.create(Humanoid.prototype);
+
+  Villain.prototype.laugh = function() {
+    return(`It is I, ${this.name}! Muawahahaha!`)};
+
+
+  function Hero(character) {
+      Humanoid.call(this, character);
+      cape: character.cape;
+      goodness: character.goodness;
+    }
+    Hero.prototype = Object.create(Humanoid.prototype);
+  
+    Hero.prototype.grandEntrance = function() {
+      return(`Never fear, ${this.name}'s here!`)};
+
+console.log('');
+console.log('STRETCH GOALS');
+console.log('');
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+
+  const evilDude = new Villain({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 2,
+      height: 10,
+    },
+    healthPoints: 250,
+    name: 'Lawrence',
+    team: 'Darkness',
+    weapons: [
+      'Staff',
+    ],
+    language: 'Evil',
+    armor: 'Golden',
+    evilness: 'Maximum',
+  });
+
+  const superDude = new Hero({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 2,
+      height: 11,
+    },
+    healthPoints: 300,
+    name: 'Frederick',
+    team: 'Light',
+    weapons: [
+      'Sword',
+    ],
+    language: 'Goodness',
+    cape: 'Fabulous',
+    goodness: 'Supreme',
+  });
+
+  console.log(evilDude.laugh());
+  console.log(superDude.grandEntrance());
