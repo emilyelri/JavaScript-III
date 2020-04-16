@@ -7,7 +7,10 @@
   
   Each constructor function has unique properties and methods that are defined in their block comments below:
 */
-  
+  console.log('');
+  console.log('');
+  console.log('PROTOTYPE: ');
+  console.log('');
 /*
   === GameObject ===
   * createdAt
@@ -16,12 +19,33 @@
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
 
+function GameObject(character) {
+  this.createdAt = character.createdAt;
+  this.name = character.name;
+  this.dimensions = character.dimensions;
+  };
+
+  GameObject.prototype.destroy = function() {
+    return(`${this.name} was removed from the game.`);
+};
+
 /*
   === CharacterStats ===
   * healthPoints
   * takeDamage() // prototype method -> returns the string '<object name> took damage.'
   * should inherit destroy() from GameObject's prototype
 */
+
+function CharacterStats(character) {
+  GameObject.call(this, character);
+  this.healthPoints = character.healthPoints;
+}
+
+CharacterStats.prototype = Object.create(GameObject.prototype);
+
+CharacterStats.prototype.takeDamage = function() {
+  return(`${this.name} took damage.`);
+}
 
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
@@ -32,7 +56,20 @@
   * should inherit destroy() from GameObject through CharacterStats
   * should inherit takeDamage() from CharacterStats
 */
- 
+
+function Humanoid(character) {
+  CharacterStats.call(this, character);
+  this.team = character.team;
+  this.weapons = character.weapons;
+  this.language = character.language;
+}
+
+Humanoid.prototype = Object.create(CharacterStats.prototype);
+
+Humanoid.prototype.greet = function() {
+  return(`${this.name} offers a greeting in ${this.language}.`);
+}
+
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
   * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
@@ -41,7 +78,7 @@
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
-/*
+
   const mage = new Humanoid({
     createdAt: new Date(),
     dimensions: {
@@ -102,9 +139,73 @@
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
 
   // Stretch task: 
-  // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
+  // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.
+
+  function Villain(character) {
+    Humanoid.call(this, character);
+    armor: character.armor;
+    evilness: character.evilness;
+  }
+  Villain.prototype = Object.create(Humanoid.prototype);
+
+  Villain.prototype.laugh = function() {
+    return(`It is I, ${this.name}! Muawahahaha!`)};
+
+
+  function Hero(character) {
+      Humanoid.call(this, character);
+      cape: character.cape;
+      goodness: character.goodness;
+    }
+    Hero.prototype = Object.create(Humanoid.prototype);
+  
+    Hero.prototype.grandEntrance = function() {
+      return(`Never fear, ${this.name}'s here!`)};
+
+console.log('');
+console.log('STRETCH GOALS');
+console.log('');
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+
+  const evilDude = new Villain({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 2,
+      height: 10,
+    },
+    healthPoints: 250,
+    name: 'Lawrence',
+    team: 'Darkness',
+    weapons: [
+      'Staff',
+    ],
+    language: 'Evil',
+    armor: 'Golden',
+    evilness: 'Maximum',
+  });
+
+  const superDude = new Hero({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 2,
+      height: 11,
+    },
+    healthPoints: 300,
+    name: 'Frederick',
+    team: 'Light',
+    weapons: [
+      'Sword',
+    ],
+    language: 'Goodness',
+    cape: 'Fabulous',
+    goodness: 'Supreme',
+  });
+
+  console.log(evilDude.laugh());
+  console.log(superDude.grandEntrance());
